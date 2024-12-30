@@ -1,0 +1,130 @@
+.registerPage {
+    background-color: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .registerContainer {
+    width: 314.97px;
+    height: 239.7px;
+    top: 258px;
+    left: 563px;
+    border-radius: 12px;
+    border: 1px;
+    opacity: 0px;
+    position: absolute;
+  }
+  
+  .registerForm {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .label {
+    width: 74.36px;
+    top: 357.2px;
+    left: 564px;
+    gap: 0px;
+    opacity: 0px;
+    padding-top: 20px;
+    height: 21.69px;
+  }
+  
+  .input {
+    width: 313.97px;
+    height: 41.31px;
+    border-radius: 12px;
+    border: 1px solid #636364;
+    background: transparent;
+    color: inherit;
+    outline: none;
+    opacity: 1;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #4b83ff;
+  }
+  .input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove outline on focus */
+  }
+  .errorLabel {
+    color: red;
+  }
+  
+  .errorInput {
+    border-color: red;
+  }
+  
+  .errorText {
+    font-size: 12px;
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  .btnPrimary {
+    background-color: #4b83ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .btnPrimary:hover {
+    background-color: #3a6ed9;
+  }
+  
+  .btnGoogle {
+    width: 315px;
+  height: 41px;
+  top: 540px;
+  left: 563px;
+  padding: 0px 32px 0px 0px;
+  gap: 0px;
+  border-radius: 12px;
+  opacity: 0px;
+  background: #1a5fff;
+  font-family: Poppins;
+font-size: 14px;
+font-weight: 500;
+line-height: 21px;
+letter-spacing: 0.03em;
+text-align: center;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+  }
+  
+  .googleLogo {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  .orText {
+    margin: 10px 0;
+    color: white;
+  }
+  
+  .loginLink {
+    margin-top: 15px;
+    color: white;
+  }
+  
+  .link {
+    color: #4b83ff;
+    text-decoration: none;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  

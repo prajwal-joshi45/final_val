@@ -1,0 +1,156 @@
+.formBuilder {
+  display: flex;
+  height: 100vh;
+  background-color: #111827;
+  color: white;
+  width: 1440px;
+}
+
+.sidebar {
+  width: 16rem;
+  border-right: 1px solid #374151;
+  padding: 1rem;
+}
+
+.sidebarTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.controlsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.controlItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #1f2937;
+  cursor: move;
+}
+
+.controlItem:hover {
+  background-color: #374151;
+}
+
+.controlLabel {
+  font-size: 0.875rem;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.formNameInput {
+  background-color: #1f2937;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flowButton {
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  border-radius: 0.25rem;
+  border: none;
+  color: white;
+}
+
+.responseButton {
+  padding: 0.5rem 1rem;
+  background-color: #374151;
+  border-radius: 0.25rem;
+  border: none;
+  color: white;
+}
+
+.dropZone {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  height: calc(100vh - 8rem);
+  padding: 1rem;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9ca3af;
+}
+
+/* New styles for the bubble elements */
+.bubbleElement {
+  position: relative;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.bubbleContent {
+  background-color: #1a1a1a;
+  border: 1px solid #3b82f6;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  min-width: 200px;
+  position: relative;
+}
+
+.bubbleInput {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  width: 100%;
+  outline: none;
+  font-size: 0.875rem;
+}
+
+.bubbleInput::placeholder {
+  color: #6b7280;
+}
+
+.bubbleTitle {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 0.875rem;
+  color: white;
+}
+
+.deleteButton {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #ef4444;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background: #dc2626;
+}
