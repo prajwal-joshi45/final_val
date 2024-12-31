@@ -13,7 +13,6 @@ router.get('/folder/:folderId', authMiddleware, async (req, res) => {
   }
 });
 
-// Create a new form
 router.post('/', authMiddleware, async (req, res) => {
   const { name, folder, elements } = req.body;
   if (!name || !folder) {
@@ -23,16 +22,16 @@ router.post('/', authMiddleware, async (req, res) => {
     const form = new Form({
       name,
       folder,
-      createdBy: req.user.id,
+      createdBy: req.user._id,
       elements,
     });
     await form.save();
     res.status(201).json(form);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating form' });
+    console.error('Error creating form:', err); // Log detailed error
+    res.status(500).json({ message: 'Error creating form', error: err.message });
   }
 });
-
 // Get a single form by ID
 router.get('/:id', authMiddleware, async (req, res) => {
   try {

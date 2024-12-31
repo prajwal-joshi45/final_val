@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register, googleAuth } from '../authService';
+import { register } from '../authService';
 import styles from '../template/LoginPage.module.css';
 import image from '../assets/google.png'
 
@@ -61,7 +61,7 @@ const RegisterPage = () => {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {/* {error && <div className={styles.errorMessage}>{error}</div>} */}
         
         <div className={styles.inputGroup}>
           <label className={styles.label}>Username</label>

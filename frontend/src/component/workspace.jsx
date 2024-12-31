@@ -8,14 +8,18 @@ import {
   Star,
   Video,
   PlaySquare,
-  Hash
+  Hash,
+  X
 } from 'lucide-react';
 import styles from '../template/workspace.module.css';
-// import { createForm } from '../services';
+ import { createForm } from '../authService';
+   
 
 const Workspace = () => {
   const [formElements, setFormElements] = useState([]);
   const [formName, setFormName] = useState('');
+  const [folderId, setFolderId] = useState('');
+  
 
   const formControls = [
     { type: 'text', icon: <FileText size={20} />, label: 'Text' },
@@ -57,27 +61,37 @@ const Workspace = () => {
     ));
   };
 
+  
   const handleSaveForm = async () => {
     try {
-      const response = await createForm({
-        name: formName,
-        folderId: 'your-folder-id', // Replace with actual folder ID
-        createdBy: 'your-user-id', // Replace with actual user ID
-        elements: formElements
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.log('User data:', user); // Log user data
+      console.log('Form name:', formName); // Log form name
+      console.log('Folder ID:', folderId); // Log folder ID
+      if (!user || !user._id) {
+        throw new Error('User ID not found');
       }
+      if (!formName || !folderId) {
+        throw new Error('Form name and folder are required');
+      }
+      const formData = {
+        name: formName,
+        folder: folderId, // Ensure folder ID is included
+        createdBy: user._id, // Use the actual user ID
+        elements: formElements.map(elem => ({
+          type: elem.type,
+          value: elem.value || '',
+          required: false // Add any additional properties you need
+        }))
+      };
+      console.log('Form data to be sent:', formData); // Log form data
 
-      const data = await response.json();
-      console.log('Form saved successfully:', data);
+      const response = await createForm(formData);
+      console.log('Form saved successfully:', response); // Log response
     } catch (error) {
-      console.error('Error saving form:', error);
+      console.error('Error saving form:', error); // Log error
     }
   };
-
   return (
     <div className={styles.formBuilder}>
       {/* Left Sidebar */}
@@ -109,6 +123,13 @@ const Workspace = () => {
             className={styles.formNameInput}
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter folder ID"
+            className={styles.folderIdInput}
+            value={folderId}
+            onChange={(e) => setFolderId(e.target.value)}
           />
           <div className={styles.buttonGroup}>
             <button className={styles.flowButton}>Flow</button>

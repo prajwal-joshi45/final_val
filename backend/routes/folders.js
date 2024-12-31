@@ -23,7 +23,7 @@ router.post('/', authMiddleware, async (req, res) => {
     const folder = new Folder({
       name,
       workspace,
-      createdBy: req.user.id,
+      createdBy: req.user.id,  // Fixed: use req.user.id instead of userId
     });
     await folder.save();
     res.status(201).json(folder);
@@ -71,14 +71,25 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     if (!folder) {
       return res.status(404).json({ message: 'Folder not found' });
     }
+    
+    // Add authorization check
     if (folder.createdBy.toString() !== req.user.id) {
-      return res.status(401).json({ message: 'You are not authorized to delete this folder' });
+      return res.status(401).json({ message: 'Not authorized to delete this folder' });
     }
-    await folder.remove();
+
+    await Folder.deleteOne({ _id: req.params.id }); // Use deleteOne instead of remove
     res.status(200).json({ message: 'Folder deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting folder' });
   }
 });
 
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    const folders = await Folder.find({ createdBy: req.user.id });
+    res.status(200).json(folders);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching folders' });
+  }
+});
 module.exports = router;

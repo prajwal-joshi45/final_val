@@ -26,29 +26,18 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
+  
     try {
-      const response = await login({
+      // The login function already parses the response and sets localStorage
+      const data = await login({
         email: formData.email,
         password: formData.password
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
-      }
-
-      const data = await response.json();
       
-      // Store the token
-      localStorage.setItem('token', data.token);
-      
-      // Store user data if needed
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      // Redirect to dashboard
+      // No need to parse response or set localStorage again since login() does that
+      console.log('Login successful, navigating to dashboard');
       navigate('/dashboard');
-
+    
     } catch (error) {
       setError(error.message || 'Login failed. Please try again.');
     } finally {
@@ -76,8 +65,7 @@ const LoginPage = () => {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        
+       
         <div className={styles.inputGroup}>
           <label className={styles.label}>Email</label>
           <input

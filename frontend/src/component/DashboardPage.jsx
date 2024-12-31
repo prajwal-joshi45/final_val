@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "../template/Dashboard.module.css"; // Import the modular CSS
 import { useNavigate } from "react-router-dom";
 
-import { getWorkspaces } from "../authService";
+import { getWorkspaces, getFolders, deleteFolder, createFolder } from "../authService";
+
 
 const Dashboard = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -10,31 +11,47 @@ const Dashboard = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [formData, setFormData] = useState({ username: '' });
   const [workspaces, setWorkspaces] = useState([]);
+  const [error, setError] = useState(null);  // Add this line
+  const [folders, setFolders] = useState([]);
   const navigate = useNavigate();
-
+  const [authStatus, setAuthStatus] = useState({ token: null, userId: null });
+  const [newFolderName, setNewFolderName] = useState(''); // Add state for new folder name
   useEffect(() => {
     const fetchWorkspaces = async () => {
       try {
-        const response = await getWorkspaces();
-        const data = await response.json();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user._id) {
+          throw new Error('User ID not found');
+        }
+        const data = await getWorkspaces(user.id);
         setWorkspaces(data);
-      } catch (error) {
-        console.error("Error fetching workspaces:", error);
+      } catch (err) {
+        setError(`Error fetching workspaces: ${err.message}`);
       }
     };
 
- 
-  const fetchUserData = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setFormData({ username: user.username });
-    }
-  };
+    const fetchFolders = async () => {
+      try {
+        const data = await getFolders();
+        setFolders(data);
+      } catch (err) {
+        setError(`Error fetching folders: ${err.message}`);
+      }
+    };
 
-  fetchWorkspaces();
+    const fetchUserData = () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        setFormData({ username: user.username });
+      }
+    };
 
-  fetchUserData();
-}, []);
+    fetchWorkspaces();
+    fetchFolders();
+    fetchUserData();
+  }, []);
+ // Empty dependency array since we only want this to run once on mount
+
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -58,9 +75,43 @@ const Dashboard = () => {
   const closeShareModal = () => {
     setIsShareModalOpen(false);
   };
+  const handleCreateFolder = async () => {
+    try {
+      console.log('Creating folder with name:', newFolderName);
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.log('User data:', user); // Add this line to log user data
+
+      if (!user || !user._id) {
+        throw new Error('User ID not found');
+      }
+      const newFolder = await createFolder({ name: newFolderName, workspace: user._id });
+      console.log('Folder created:', newFolder);
+      setFolders([...folders, newFolder]);
+      setNewFolderName('');
+      closeModal();
+    } catch (err) {
+      console.error('Failed to create folder:', err);
+      setError('Failed to create folder');
+    }
+  };
+
+  const handleDeleteFolder = async (folderId) => {
+    try {
+      await deleteFolder(folderId);
+      setFolders(folders.filter(folder => folder._id !== folderId));
+    } catch (err) {
+      setError('Failed to delete folder');
+    }
+  };
 
   return (
     <div className={`${styles.dashboard} ${isDarkMode ? styles.dark : styles.light}`}>
+       {error && (
+        <div className={styles.error}>
+          {error}
+          <button onClick={() => setError(null)}>✕</button>
+        </div>
+      )}
       <header className={styles.navcontainer}>
         <div className={styles.workspace}>{formData.username}'s workspace</div>
         <div className={styles.toggleWrapper}>
@@ -75,10 +126,17 @@ const Dashboard = () => {
       </header>
 
       <main className={styles.mainContent}>
+      
         <div className={styles.container}>
           <div className={styles.buttonGroup}>
             <div className={styles.createFolderButton}>
               <button onClick={openModal} className={styles.createFolder}>📂 Create a folder</button>
+              {folders.map((folder) => (
+          <div key={folder._id} className={styles.folderItem}>
+            <span>{folder.name}</span>
+            <button onClick={() => handleDeleteFolder(folder._id)} className={styles.deleteButton}>Delete</button>
+            </div>
+        ))}
             </div>
 
             <div className={styles.Typebotbutton}>
@@ -105,9 +163,11 @@ const Dashboard = () => {
               type="text"
               className={styles.modalInput}
               placeholder="Enter folder name"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
             />
             <div className={styles.modalActions}>
-              <button className={styles.doneBtn} onClick={closeModal}>
+              <button className={styles.doneBtn} onClick={handleCreateFolder}>
                 Done
               </button>
               <button className={styles.cancelBtn} onClick={closeModal}>
