@@ -16,19 +16,20 @@ router.get('/workspace/:workspaceId', authMiddleware, async (req, res) => {
 // Create a new folder
 router.post('/', authMiddleware, async (req, res) => {
   const { name, workspace } = req.body;
-  if (!name || !workspace) {
-    return res.status(400).json({ message: 'Folder name and workspace are required' });
+  if (!name) {
+    return res.status(400).json({ message: 'Folder name is required' });
   }
   try {
     const folder = new Folder({
       name,
       workspace,
-      createdBy: req.user.id,  // Fixed: use req.user.id instead of userId
+      createdBy: req.user.id,
     });
     await folder.save();
     res.status(201).json(folder);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating folder' });
+    console.error('Error creating folder:', err); // Log detailed error
+    res.status(500).json({ message: 'Error creating folder', error: err.message });
   }
 });
 

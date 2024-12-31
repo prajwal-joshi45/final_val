@@ -16,10 +16,12 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.user; // Changed from { id: decoded.userId }
+    req.user = { id:  decoded.id  }; // Make sure this matches your token payload
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
+    console.error('Auth middleware error:', err);
+    res.status(401).json({ message: 'Authentication failed' });
   }
 };
+
 module.exports = authMiddleware;

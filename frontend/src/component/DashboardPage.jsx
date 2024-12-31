@@ -77,21 +77,37 @@ const Dashboard = () => {
   };
   const handleCreateFolder = async () => {
     try {
-      console.log('Creating folder with name:', newFolderName);
-      const user = JSON.parse(localStorage.getItem('user'));
-      console.log('User data:', user); // Add this line to log user data
-
-      if (!user || !user._id) {
-        throw new Error('User ID not found');
+      if (!newFolderName.trim()) {
+        setError('Folder name cannot be empty');
+        return;
       }
-      const newFolder = await createFolder({ name: newFolderName, workspace: user._id });
-      console.log('Folder created:', newFolder);
-      setFolders([...folders, newFolder]);
+  
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.log('Current user data:', user);
+      
+      if (!user || !user._id) {
+        setError('User session not found. Please login again.');
+        return;
+      }
+  
+      console.log('Creating folder with name:', newFolderName);
+  
+      const newFolder = await createFolder({ 
+        name: newFolderName.trim(),
+        workspace: user._id,
+        createdBy: user._id
+      });
+  
+      console.log('Successfully created folder:', newFolder);
+      
+      // Update the folders state with the new folder
+      setFolders(prevFolders => [...prevFolders, newFolder]);
       setNewFolderName('');
       closeModal();
+      
     } catch (err) {
-      console.error('Failed to create folder:', err);
-      setError('Failed to create folder');
+      console.error('Folder creation failed:', err);
+      setError(err.message || 'Failed to create folder');
     }
   };
 

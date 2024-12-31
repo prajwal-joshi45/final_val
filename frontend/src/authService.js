@@ -110,10 +110,11 @@ export const createFolder = async (folderData) => {
   });
   if (!response.ok) {
     const errorData = await response.json();
+    console.error('Server error:', errorData); // Log server error
     throw new Error(errorData.message || 'Failed to create folder');
   }
   return response.json();
-}
+};
 
 export const deleteFolder = async (folderId) => {
   const token = localStorage.getItem('token');
