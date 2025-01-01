@@ -4,21 +4,17 @@ const folderSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
   },
   workspace: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'Workspace',
     required: true,
-    ref: 'Workspace'
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-    ref: 'User'
-  }
-}, {
-  timestamps: true
+  },
 });
 
-const Folder = mongoose.model('Folder', folderSchema);
-module.exports = Folder;
+module.exports = mongoose.model('Folder', folderSchema);

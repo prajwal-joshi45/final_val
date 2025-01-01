@@ -23,7 +23,7 @@ const Dashboard = () => {
         if (!user || !user._id) {
           throw new Error('User ID not found');
         }
-        const data = await getWorkspaces(user.id);
+        const data = await getWorkspaces(user._id);
         setWorkspaces(data);
       } catch (err) {
         setError(`Error fetching workspaces: ${err.message}`);
@@ -75,6 +75,7 @@ const Dashboard = () => {
   const closeShareModal = () => {
     setIsShareModalOpen(false);
   };
+  
   const handleCreateFolder = async () => {
     try {
       if (!newFolderName.trim()) {

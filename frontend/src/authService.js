@@ -96,26 +96,59 @@ export const getFolders = async () => {
 };
 
 export const createFolder = async (folderData) => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('User is not authenticated');
-  }
-  const response = await fetch(`${API_URL}/folder`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(folderData)
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Server error:', errorData); // Log server error
-    throw new Error(errorData.message || 'Failed to create folder');
-  }
-  return response.json();
-};
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Authentication token not found');
+    }
 
+    // Validate folder data before sending
+    if (!folderData.name || !folderData.workspace) {
+      throw new Error('Missing required folder data');
+    }
+
+    const response = await fetch(`${API_URL}/folder`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: folderData.name.trim(),
+        workspace: folderData.workspace
+        // Don't send createdBy - it should come from the server's auth middleware
+      })
+    });
+
+    // Log response details for debugging
+    console.log('Response status:', response.status);
+    
+    const contentType = response.headers.get('Content-Type');
+    if (!response.ok) {
+      let errorMessage = 'Failed to create folder';
+      
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+        console.error('Server error details:', errorData);
+      }
+      
+      throw new Error(errorMessage);
+    }
+
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Invalid server response format');
+    }
+
+    const responseData = await response.json();
+    console.log('Folder created successfully:', responseData);
+    return responseData;
+
+  } catch (error) {
+    console.error('Error in createFolder:', error);
+    throw error;
+  }
+};
 export const deleteFolder = async (folderId) => {
   const token = localStorage.getItem('token');
   if (!token) {

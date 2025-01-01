@@ -4,12 +4,16 @@ const Workspace = require('../schema/workspace');
 const authMiddleware = require('../middleware/auth');
 
 // Get all workspaces
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/:userId', authMiddleware, async (req, res) => {
   try {
-    const workspaces = await Workspace.find({ owner: req.user.id });
+    const workspaces = await Workspace.find({ createdBy: req.params.userId });
+    if (!workspaces) {
+      return res.status(404).json({ message: 'Workspaces not found' });
+    }
     res.status(200).json(workspaces);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching workspaces' });
+    console.error('Error fetching workspaces:', err);
+    res.status(500).json({ message: 'Error fetching workspaces', error: err.message });
   }
 });
 

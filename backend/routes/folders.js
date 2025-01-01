@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Folder = require('../schema/folder');
+const Workspace = require('../schema/workspace');
 const authMiddleware = require('../middleware/auth');
 
 // Get all folders in a workspace
@@ -13,25 +14,49 @@ router.get('/workspace/:workspaceId', authMiddleware, async (req, res) => {
   }
 });
 
-// Create a new folder
+
 router.post('/', authMiddleware, async (req, res) => {
-  const { name, workspace } = req.body;
-  if (!name) {
-    return res.status(400).json({ message: 'Folder name is required' });
-  }
   try {
+    console.log('--- Debug Information ---');
+    console.log('1. Request Body:', req.body);
+    console.log('2. Auth User:', req.user);
+    
+    const { name, workspace } = req.body;
+    
+    if (!name) {
+      return res.status(400).json({ message: 'Folder name is required' });
+    }
+
+    if (!workspace) {
+      return res.status(400).json({ message: 'Workspace ID is required' });
+    }
+
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: 'User ID not found in token' });
+    }
+
     const folder = new Folder({
-      name,
+      name: name.trim(),
       workspace,
-      createdBy: req.user.id,
+      createdBy: req.user.id  // This should now be available from the middleware
     });
-    await folder.save();
-    res.status(201).json(folder);
+
+    console.log('3. Creating folder with:', folder);
+    
+    const savedFolder = await folder.save();
+    console.log('4. Successfully created folder:', savedFolder);
+    
+    res.status(201).json(savedFolder);
+
   } catch (err) {
-    console.error('Error creating folder:', err); // Log detailed error
+    console.error('Error creating folder:', err);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation Error', error: err.message });
+    }
     res.status(500).json({ message: 'Error creating folder', error: err.message });
   }
 });
+
 
 // Get a single folder by ID
 router.get('/:id', authMiddleware, async (req, res) => {
