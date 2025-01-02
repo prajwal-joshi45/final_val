@@ -18,7 +18,7 @@ import styles from '../template/workspace.module.css';
 const Workspace = () => {
   const [formElements, setFormElements] = useState([]);
   const [formName, setFormName] = useState('');
-  const [folderId, setFolderId] = useState('');
+  const [folder, setFolder] = useState('');
   
 
   const formControls = [
@@ -61,35 +61,39 @@ const Workspace = () => {
     ));
   };
 
-  
   const handleSaveForm = async () => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      console.log('User data:', user); // Log user data
-      console.log('Form name:', formName); // Log form name
-      console.log('Folder ID:', folderId); // Log folder ID
       if (!user || !user._id) {
         throw new Error('User ID not found');
       }
-      if (!formName || !folderId) {
+      if (!formName || !folder) {
         throw new Error('Form name and folder are required');
       }
+
+      // Ensure all elements have a value
+      const validElements = formElements.map(elem => ({
+        type: elem.type,
+        value: elem.value || '',  // Ensure value is never undefined
+        required: false
+      }));
+
       const formData = {
         name: formName,
-        folder: folderId, // Ensure folder ID is included
-        createdBy: user._id, // Use the actual user ID
-        elements: formElements.map(elem => ({
-          type: elem.type,
-          value: elem.value || '',
-          required: false // Add any additional properties you need
-        }))
+        folder: folder,
+        elements: validElements
       };
-      console.log('Form data to be sent:', formData); // Log form data
 
+      console.log('Sending form data:', formData);
       const response = await createForm(formData);
-      console.log('Form saved successfully:', response); // Log response
+      console.log('Form saved successfully:', response);
+      
+      // Clear form after successful save
+      setFormElements([]);
+      setFormName('');
+      setFolder('');
     } catch (error) {
-      console.error('Error saving form:', error); // Log error
+      console.error('Error saving form:', error);
     }
   };
   return (
@@ -124,13 +128,13 @@ const Workspace = () => {
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
           />
-          <input
-            type="text"
-            placeholder="Enter folder ID"
-            className={styles.folderIdInput}
-            value={folderId}
-            onChange={(e) => setFolderId(e.target.value)}
-          />
+           <input
+        type="text"
+        placeholder="Enter folder"
+        className={styles.folderInput}
+        value={folder}
+        onChange={(e) => setFolder(e.target.value)}
+      />
           <div className={styles.buttonGroup}>
             <button className={styles.flowButton}>Flow</button>
             <button className={styles.responseButton}>Response</button>

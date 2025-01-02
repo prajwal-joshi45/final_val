@@ -21,7 +21,7 @@ const authMiddleware = (req, res, next) => {
     // Set user info on request object
     // Since your token structure has user.id nested
     req.user = decoded.user;
-
+   
     // Log the user object that's being set
     console.log('Setting req.user to:', req.user);
 
@@ -33,3 +33,4 @@ const authMiddleware = (req, res, next) => {
 };
 
 module.exports = authMiddleware;
+

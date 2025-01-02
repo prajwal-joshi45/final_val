@@ -210,19 +210,28 @@ export const createForm = async (formData) => {
   if (!token) {
     throw new Error('User is not authenticated');
   }
-  const response = await fetch(`${API_URL}/form`, { // Ensure this matches the server route
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Server error:', errorData); // Log server error
+  
+  try {
+    console.log('Sending to server:', formData); // Debug log
+    const response = await fetch(`${API_URL}/form`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
 
-    throw new Error(errorData.message || 'Failed to create form');
+    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('Server error:', data);
+      throw new Error(data.message || 'Failed to create form');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error in createForm:', error);
+    throw error;
   }
-  return response.json();
 };
