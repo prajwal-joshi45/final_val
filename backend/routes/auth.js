@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// User registration
+// registration
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// User login
+//  login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {

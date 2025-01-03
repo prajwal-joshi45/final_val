@@ -31,24 +31,33 @@ opacity: 0px;
   height: 65px;
   padding: 0px 60px 1px 220px;
   gap: 0px;
-  border: 0px 0px 1px 0px;
-  opacity: 0px;
+  border-bottom: 2px solid grey;
+  
+  opacity: 1;
   align-items: center;
   justify-content: space-between;
   
 }
 
-.Typebotbutton{
-  width: Fill (1,000px)px;
-height: Hug (270px)px;
-gap: 0px;
-opacity: 0px;
+.Typebotbutton {
+  display: flex;
+  flex-wrap: wrap; /* Ensures wrapping when space is limited */
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+  gap: 20px; /* Adds spacing between items */
+  margin-top: 40px;
+}
 
-
+.formsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
+  gap: 10px; 
+  flex-wrap:wrap;
 }
 
 .createFolderButton{
-width:1,000px;
+width:1000px;
 height: 40px;
 gap: 8px;
 opacity: 0px;
@@ -57,8 +66,8 @@ margin: 0px 0px 10px 0px;
 }
 
 .workspace {
-  width: Fixed (914px)px;
-height: Fixed (64px)px;
+  width: 400px;
+height: 45px;
 max-width: 1000px;
 left: 220px;
 padding: 12px 0px 12px 0px;
@@ -124,8 +133,8 @@ opacity: 0px;
 }
 
 .mainContent {
-  width: Fill (1,440px)px;
-  height: Fill (827px)px;
+  width: 1440px;
+  height:827px;
   padding: 0px 220px 0px 220px;
   gap: 0px;
   opacity: 0px;
@@ -150,8 +159,8 @@ opacity: 0px;
 }
 
 .createFolder {
-width: fixed(171px)px; 
-height: hug(40px)px;
+width: 171px; 
+height: 40px;
 min-width: 40px;
 padding: 0px 8px 0px 0px;
 gap: 8px;
@@ -165,7 +174,7 @@ line-height: 19.2px;
 text-align: center;
 text-underline-position: from-font;
 text-decoration-skip-ink: none;
-color: #FFFFFF;
+color: #717171;
 margin: 0px 20px 0px 0px;
 }
 
@@ -178,8 +187,140 @@ gap: 0px;
 border-radius:6px 6px 6px 6px;
 opacity: 0px;
 background: #1A5FFF;
+font-family: Open Sans;
+align-items: center; /* Centers content vertically */
+justify-content: center;
+
+
+
 }
 
+.formItem {
+  width: 225px;
+  height: 270px;
+  font-family: Open Sans;
+  padding: 80.2px 41.4px 80.21px 41.41px;
+  gap: 0px;
+  border-radius: 6px 6px 6px 6px;
+  background-color: rgb(83, 83, 83);
+  display: flex;
+  margin-left: 10px; 
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font:"Poppins", sans-serif;
+  color:white;
+}
+
+.noForms{
+  align-items: center;
+  padding-left:30%;
+  width: 700px;
+
+}
+
+.workspace {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.workspace:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  animation: slideDown 0.2s ease-out;
+}
+
+.dropdownItem {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.dropdownItem:last-child {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.dropdownItem:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdownItem:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .workspace {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #e5e7eb;
+  }
+
+  .workspace:hover {
+    background-color: #374151;
+    border-color: #4b5563;
+  }
+
+  .dropdownMenu {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .dropdownItem {
+    color: #e5e7eb;
+  }
+
+  .dropdownItem:hover {
+    background-color: #374151;
+  }
+
+  .dropdownItem:not(:last-child) {
+    border-bottom-color: #374151;
+  }
+}
 .createTypebot:hover {
   transform: scale(1.05);
 }
@@ -291,6 +432,7 @@ background: #1A5FFF;
 }
 
 .modalInput {
+  height: 35px;
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
@@ -347,9 +489,10 @@ line-height: 19.2px;
 text-align: center;
 text-underline-position: from-font;
 text-decoration-skip-ink: none;
-color: #FFFFFF;
+color: #717171;
 margin: 0px 20px 0px 0px;
 align-content: center;
+align-items: center;
 }
 
 
@@ -358,10 +501,71 @@ align-content: center;
 }
 
 .deleteButton {
-  background-color: #dc3545;
-  color: #fff;
+  background-color:transparent;
+  color: #f30808;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
+  justify-content: center;
+  align-content:flex-end;
+
+}
+.inviteSection {
+  margin-bottom: 20px;
+}
+
+.inviteInputGroup {
+  align-content: center;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.permissionSelect {
+  min-width: 100px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  height: 35px;
+}
+
+.linkContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+}
+
+.copyButton {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  background: #0056b3;
+}
+.deleteButtonform{
+  background-color:transparent;
+  color: #f30808;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+
+  align-self: top;
+  
+ 
+
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Form = require('../schema/form');
+const Form = require('../schema/form')
+const Folder = require('../schema/folder');
 const authMiddleware = require('../middleware/auth');
 const { formAuthMiddleware } = require('../middleware/auth1');
 
@@ -17,33 +18,43 @@ router.get('/folder/:folderId', authMiddleware, async (req, res) => {
 router.post('/', formAuthMiddleware, async (req, res) => {
   const { name, folder, elements } = req.body;
   
-  if (!name || !folder) {
-    return res.status(400).json({ message: 'Form name and folder are required' });
+  if (!name) {
+    return res.status(400).json({ message: 'Form name is required' });
   }
 
   try {
-    // Log the user data to debug
     console.log('User from auth middleware:', req.user);
     
     if (!req.user || !req.user._id) {
       return res.status(401).json({ message: 'User ID not found' });
     }
 
-    // Ensure elements have all required fields
+    if (folder) {
+      const folderExists = await Folder.findById(folder);
+      if (!folderExists) {
+        return res.status(404).json({ message: 'Specified folder not found' });
+      }
+    }
+
     const validElements = elements.map(elem => ({
       type: elem.type,
       value: elem.value || '',
       required: elem.required || false
     }));
 
-    const form = new Form({
+    const formData = {
       name,
-      folder,
-      createdBy: req.user._id, // Make sure this is getting set
+      createdBy: req.user._id,
       elements: validElements
-    });
+    };
 
-    console.log('Form before save:', form); // Debug log
+    if (folder) {
+      formData.folder = folder;
+    }
+
+    const form = new Form(formData);
+
+    console.log('Form before save:', form);
     await form.save();
     res.status(201).json(form);
   } catch (err) {

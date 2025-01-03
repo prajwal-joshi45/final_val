@@ -5,6 +5,7 @@ import LandingPage from './component/LandingPage';
 import RegisterPage from './component/RegisterPage';
 import DashboardPage from './component/DashboardPage';
 import Workspace from './component/workspace';
+import Settings from './component/Settings';
 const App = () => {
   return (
     <Router>
@@ -17,9 +18,10 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        
+        <Route path="/workspace/:formId" element={<Workspace />} />
         <Route path="/workspace" element={<Workspace />} />
-      
+        <Route path="/settings" element={<Settings />} />
+
 
         {/* Catch all route - redirects to landing page if no match */}
         <Route path="*" element={<Navigate to="/landing" replace />} />

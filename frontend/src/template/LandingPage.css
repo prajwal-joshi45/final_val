@@ -1,4 +1,4 @@
-/* General Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -11,19 +11,18 @@
     color: white;
     line-height: 1.6;
     display: flex;
-    justify-content: center; /* Centers the page horizontally */
-    align-items: flex-start; /* Aligns the content at the top */
+    justify-content: center; 
+    align-items: flex-start; 
     min-height: 100vh;
   }
   
-  /* Wrapper to center-align all content */
+  
   .container {
     width: 1440px;
-    margin: 0 auto; /* Centers the container */
+    margin: 0 auto; 
     position: relative;
   }
   
-  /* Navbar */
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -85,8 +84,8 @@
     margin-bottom: 30px;
     font-size: 18px;
     max-width: 800px;
-    margin-left: auto; /* Centers the paragraph */
-    margin-right: auto; /* Centers the paragraph */
+    margin-left: auto; 
+    margin-right: auto; 
   }
   
   .cta {
@@ -99,7 +98,6 @@
     cursor: pointer;
   }
   
-  /* Main Image Section */
   .image-section {
     text-align: center;
     margin: 40px 0;
@@ -152,10 +150,10 @@
     color: white;
   }
   
-  /* Media Queries for Responsiveness */
+  
   @media (max-width: 1440px) {
     .container {
-      width: 95%; /* Allow container to adapt to smaller screens */
+      width: 95%; 
     }
   }
   
