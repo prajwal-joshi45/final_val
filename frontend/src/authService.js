@@ -1,4 +1,4 @@
-const API_URL = 'https://final-val-backend.onrender.com/api';
+const API_URL = 'https://final-val-backend.onrender.com/';
 
 export const register = async (userData) => {
   const response = await fetch(`${API_URL}/auth/register`, {
